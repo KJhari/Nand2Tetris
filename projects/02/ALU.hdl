@@ -26,6 +26,8 @@
 // if (out == 0) set zr = 1
 // if (out < 0) set ng = 1
 
+//Harikrishnan Kokkanthara Jeevan
+
 CHIP ALU {
     IN  
         x[16], y[16],  // 16-bit inputs        
@@ -43,4 +45,37 @@ CHIP ALU {
 
     PARTS:
    // Put you code here:
+   //i/p if zx or zy = 1
+   Mux16(a=x, b=false, sel=zx, out=x1);
+   Mux16(a=y, b=false, sel=zy, out=y1);
+
+    //ip if nx or ny = 1
+   Not16(in=x1, out=notx1);
+   Mux16(a=x1, b=notx1, sel=nx, out=x2);
+   Not16(in=y1, out=noty1);
+   Mux16(a=y1, b=noty1, sel=ny, out=y2);
+
+
+    //create x+y and x&y and feed to mux to select based on f value
+   Add16(a=x2, b=y2, out=xAddy);
+   And16(a=x2, b=y2, out=xAndy);
+   Mux16(a=xAndy, b=xAddy, sel=f, out=fout);
+
+    //negate the output and feed to mux 
+   Not16(in=fout, out=nfout);
+   //ip negated out and out and select based on no ip. MSB will be 1 for negative nos, extract the MSBs and LSBs to check if zr
+   Mux16(a=fout, b=nfout, sel=no, out=out, out[15]=ng, out[0..7]=oL, out[8..15]=oH);
+
+    //zero flag
+   //Or all the bits of LSBs and MSbs to check to get whether ip is 0 
+   Or8Way(in=oL, out=oL1);
+   Or8Way(in=oH, out=oH1);
+   //or the result to get whether zr is 0 or 1
+   Or(a=oL1, b=oH1, out=zr0);
+   //negate the zr to set zr as 0 for all bits =0 and vice versa
+    Not(in=zr0, out=zr);
+
+
+
+
 }
