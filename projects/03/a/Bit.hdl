@@ -9,10 +9,15 @@
  *                 else out does not change (out[t+1] = out[t])
  */
 
+  //Harikrishnan Kokkanthara Jeevan
+
 CHIP Bit {
     IN in, load;
     OUT out;
 
     PARTS:
     // Put your code here:
+    Mux(a=Dffout, b=in, sel=load, out=muxOut);
+    DFF(in=muxOut, out=out, out=Dffout);
+    
 }

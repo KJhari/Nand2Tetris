@@ -11,10 +11,19 @@
  * else                    out[t+1] = out[t]
  */
 
+  //Harikrishnan Kokkanthara Jeevan
+
 CHIP PC {
     IN in[16],load,inc,reset;
     OUT out[16];
 
     PARTS:
     // Put your code here:
+    Register(in=resetMuxOut, load=true, out=regOut0, out=out);
+    
+    Inc16(in=regOut0, out=incOut);
+
+    Mux16(a=loadMuxOut, b[0..15]=false, sel=reset, out=resetMuxOut); // reset mux, closest to the reg
+    Mux16(a=incMuxOut, b=in, sel=load, out=loadMuxOut); //load mux
+    Mux16(a=regOut0, b=incOut, sel=inc, out=incMuxOut ); //inc mux //outermost
 }
