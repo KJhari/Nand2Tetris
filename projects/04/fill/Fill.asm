@@ -12,3 +12,45 @@
 // the screen should remain fully clear as long as no key is pressed.
 
 // Put your code here.
+(BASE)
+    @8192     // initialize i= 8192 , 256 rows of 512 pixels / 16 bits
+    D = A
+    @i
+    M = D
+
+
+(LOOP)
+    @i
+    M = M-1
+    D = M
+    @BASE
+    D; JLT
+
+    @KBD   //mem map addr of keyboard RAM[24576]
+    D = M 
+
+    @Key_Pressed // if KBD ! 0 ie key is pressed
+    D;JNE
+    @Key_Not_Pressed // if KBD =0, key is not pressed
+    D;JEQ
+ 
+
+(Key_Pressed)
+    @SCREEN
+    D = A
+    @i
+    A = D + M
+    M = -1
+    @LOOP
+    0;JMP
+
+
+(Key_Not_Pressed)
+    @SCREEN
+    D = A
+    @i
+    A = D + M
+    M = 0
+    @LOOP
+    0;JMP
+
