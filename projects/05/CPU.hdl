@@ -25,6 +25,8 @@
  * than to the address resulting from executing the current instruction. 
  */
 
+//Harikrishnan Kokkanthara Jeevan
+
 CHIP CPU {
 
     IN  inM[16],         // M value input  (M = contents of RAM[A])
@@ -40,4 +42,62 @@ CHIP CPU {
 
     PARTS:
     // Put your code here:
+    Mux16(a=false, b=instruction, sel=instruction[15], 
+    out[0]=jgtC,
+    out[1]=jeqC,
+    out[2]=jltC,
+    out[3]=destMC,
+    out[3]=writeM,
+    out[4]=destDC,
+    out[5]=destAC,
+    out[6]=noC,
+    out[7]=fC,
+    out[8]=nyC,
+    out[9]=zyC,
+    out[10]=nxC,
+    out[11]=zxC,
+    out[12]=AorMC,
+    //bits 13 & 14 are unused
+    out[15]=insType);
+   
+
+    Not(in=insType, out=notInsType); // if MSB of ins is 0, then also a register has to be loaded
+    Or(a=notInsType, b=destAC, out=loadA); // if either ins[15] or ins[5] (destination is A ) 
+
+
+    //Load A register
+    Mux16(a=instruction, b=aluOut, sel=insType, out=mux1Out); 
+    // Register(in=mux1Out, load=loadA, out=regAout, addressM = out[0..14] ); // A register
+    ARegister(in=mux1Out, load=loadA, out=regAout ,out[0..14]=addressM);
+
+
+    //Load D register
+    Mux16(a=regAout, b=inM, sel=AorMC, out=mux2Out);
+    // Register(in=aluOut, load=destDC, out=regDout); //D register
+    DRegister(in=aluOut, load=destDC, out=regDout);
+
+
+
+    //op controls ng & zr along with ip jmp control bits to make pc load
+
+    And(a=jltC, b=negOut, out=jle);
+    And(a=jeqC, b=zeroOut, out=jeq);
+    And(a=jgtC, b=notZeroAndnotNeg, out=jgt);
+
+    //or all the above signals to form load
+    Or(a=jle, b=jeq, out=lOreq);
+    Or(a=lOreq, b=jgt, out=pcLoad);
+    
+
+    //its greater if it not less than and not equal to 0
+    // Not(in=zeroOut, out=notZeroOut);
+    // Not(in=negOut, out=notNegOut);
+    // And(a=notZeroOut, b=notNegOut, out=notZeroAndnotNeg);
+    Or(a=zeroOut, b=negOut, out=zOrneg);
+    Not(in=zOrneg, out=notZeroAndnotNeg);
+
+    ALU(x=regDout, y=mux2Out, zx=zxC, nx=nxC, zy=zyC, ny=nyC, f=fC, no=noC, out=outM, out=aluOut, zr=zeroOut, ng=negOut);
+    
+    //inc value is always set as true bcuz, if load is applied with i/p then inc is discarded
+    PC(in=regAout, load=pcLoad, inc=true, reset=reset, out[0..14]=pc, out[15]=false);
 }

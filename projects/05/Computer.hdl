@@ -14,10 +14,15 @@
  * with the computer via the keyboard.
  */
 
+//Harikrishnan Kokkanthara Jeevan
+
 CHIP Computer {
 
     IN reset;
 
     PARTS:
     // Put your code here:
+    ROM32K(address=pcOut, out=romOut);
+    Memory(in=storeMem, load=writeMem, address=addressMem, out=memOut);
+    CPU(inM=memOut, instruction=romOut, reset=reset, outM=storeMem, writeM=writeMem, addressM=addressMem, pc=pcOut);
 }
