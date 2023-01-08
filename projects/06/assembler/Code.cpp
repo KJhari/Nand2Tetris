@@ -1,12 +1,12 @@
-
+// Harikrishnan Kokkanthara Jeevan
 #include "Code.h"
 #include "TableLookup.h"
 
+using std::bitset;
 using std::string;
 using std::vector;
-using std::bitset;
 
-//initializes the lookup tables
+// initializes the lookup tables
 void initTables()
 {
 
@@ -17,7 +17,7 @@ void initTables()
     initSymbolTable(symbolTable);
 }
 
-//return the machine code for a instructions
+// return the machine code for a instructions
 string retCodeA(string op)
 {
     string s = "";
@@ -32,7 +32,7 @@ string retCodeA(string op)
     return s;
 }
 
-//returns the machine code for c instructions
+// returns the machine code for c instructions
 string retCodeC(vector<string> op)
 {
     // C instruction format = 1 11(unused) acccc ddd jjj

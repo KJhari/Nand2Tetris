@@ -1,3 +1,4 @@
+// Harikrishnan Kokkanthara Jeevan
 #include "TableLookup.h"
 
 using std::string;
@@ -9,9 +10,7 @@ unordered_map<string, string> compATable = {};
 unordered_map<string, string> compNotATable = {};
 unordered_map<string, string> symbolTable = {};
 
-
-
-//init jmp table
+// init jmp table
 void initJumpTable(unordered_map<string, string> &jmpTable)
 {
     jmpTable.insert({"NULL", "000"});
@@ -24,7 +23,7 @@ void initJumpTable(unordered_map<string, string> &jmpTable)
     jmpTable.insert({"JMP", "111"});
 }
 
-//init destination table
+// init destination table
 void initDestTable(unordered_map<string, string> &destTable)
 {
     destTable.insert({"NULL", "000"});
@@ -37,7 +36,7 @@ void initDestTable(unordered_map<string, string> &destTable)
     destTable.insert({"AMD", "111"});
 }
 
-//init comp table ,a=0
+// init comp table ,a=0
 void initCompNotATable(unordered_map<string, string> &compNotATable)
 {
     compNotATable.insert({"0", "101010"});
@@ -60,7 +59,7 @@ void initCompNotATable(unordered_map<string, string> &compNotATable)
     compNotATable.insert({"D|A", "010101"});
 }
 
-//init comp table ,a=1
+// init comp table ,a=1
 void initCompATable(unordered_map<string, string> &compNotATable)
 {
 
@@ -76,7 +75,7 @@ void initCompATable(unordered_map<string, string> &compNotATable)
     compNotATable.insert({"D|M", "010101"});
 }
 
-//init symbol table
+// init symbol table
 void initSymbolTable(unordered_map<string, string> &symbolTable)
 {
     symbolTable.insert({"R0", "0"});
@@ -102,5 +101,4 @@ void initSymbolTable(unordered_map<string, string> &symbolTable)
     symbolTable.insert({"ARG", "2"});
     symbolTable.insert({"THIS", "3"});
     symbolTable.insert({"THAT", "4"});
-
 }

@@ -1,11 +1,11 @@
+// Harikrishnan Kokkanthara Jeevan
 #include "assembler.h"
 #include "Parser.h"
 #include "Code.h"
 
-using std::string;
 using std::fstream;
+using std::string;
 using std::vector;
-
 
 int readFile(const string filename)
 {
@@ -15,7 +15,7 @@ int readFile(const string filename)
 	string writeFile = retFileName(filename) + ".hack";
 	vector<string> splitCode;
 
-	//open the hack1 file
+	// open the hack1 file
 	fin.open(filename);
 	if (fin.is_open())
 	{
@@ -41,29 +41,29 @@ int readFile(const string filename)
 			int line_num = 0;
 			while (getline(fin, line))
 			{
-				//uncomment this line to show the lines from hack1 helper file
-				// std::cout << "line " << line_num << ": " << line << "\n";
+				// uncomment this line to show the lines from hack1 helper file
+				//  std::cout << "line " << line_num << ": " << line << "\n";
 				line_num++;
 
 				if (!(isComment(line)))
 				{
-					//if c instruction 
+					// if c instruction
 					if (line[0] != '@')
 					{
-						//if c instruction contains ;
+						// if c instruction contains ;
 						if (line.find(";") != string::npos)
 						{
 							if (line.find('=') == string::npos)
 							{
-								//if instruction does not contain = but contains ;. eg: 0:JMP
+								// if instruction does not contain = but contains ;. eg: 0:JMP
 								splitCode = parser_string(line, ";");
 							}
 							else
 							{
-								//if instructions contains all operands eg: D=D-M;JMP
-								//split line based on =
+								// if instructions contains all operands eg: D=D-M;JMP
+								// split line based on =
 								splitCode = parser_string(line, "=");
-								//split the 2nd operand based on ; to generate other operands
+								// split the 2nd operand based on ; to generate other operands
 								vector<string> sp = parser_string(splitCode[1], ";");
 								splitCode.pop_back();
 								for (int i = 0; i < sp.size(); i++)
@@ -73,20 +73,20 @@ int readFile(const string filename)
 							}
 						}
 						else
-						{	
-							//if c instruction is of the format D=M etc..
+						{
+							// if c instruction is of the format D=M etc..
 							splitCode = parser_string(line, "=");
 						}
 						machineCode = retCodeC(splitCode);
-						//uncomment this to see the generated c instruction machine code
-						// std::cout << machineCode << "\n";
+						// uncomment this to see the generated c instruction machine code
+						//  std::cout << machineCode << "\n";
 						fout << machineCode << "\n";
 					}
 					else
 					{
 						machineCode = retCodeA(line);
-						//uncomment this to see the generated a instruction machine code
-						// std::cout << machineCode << "\n";
+						// uncomment this to see the generated a instruction machine code
+						//  std::cout << machineCode << "\n";
 						fout << machineCode << "\n";
 					}
 				}
@@ -103,16 +103,13 @@ int readFile(const string filename)
 	}
 }
 
-
-
-//run compiled file with "-f filename.asm"
+// run compiled file with "-f filename.asm"
 int main(int argc, char **argv)
 {
-	//initialize the predefined symbol & lookup tables
+	// initialize the predefined symbol & lookup tables
 	initTables();
 
-
-	//Read assembly file from command line
+	// Read assembly file from command line
 	string asm_file, argument;
 	for (int i = 0; i < argc; i++)
 	{
@@ -123,19 +120,20 @@ int main(int argc, char **argv)
 		}
 	}
 
-	//Generate a helper file without labels //first pass
+	// Generate a helper file without labels //first pass
 	labelParser(asm_file);
-	//Generate a helper file without varibales //2nd pass
+	// Generate a helper file without varibales //2nd pass
 	symbolParser(retFileName(asm_file) + ".hack0");
 	std::cout << "Input file name: " << asm_file << std::endl;
 
-	//genetare the machine code file
+	// genetare the machine code file
 	int code = readFile(retFileName(asm_file) + ".hack1");
 	if (code == 0)
 	{
 		std::cout << "sucessfully assembled " << asm_file << " into " << retFileName(asm_file) << ".hack" << std::endl;
 	}
-	else exit(-1);
+	else
+		exit(-1);
 	// remove helper files
 	removeHelperFiles(retFileName(asm_file) + ".hack0");
 	removeHelperFiles(retFileName(asm_file) + ".hack1");

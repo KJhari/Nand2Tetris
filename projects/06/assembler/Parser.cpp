@@ -1,3 +1,4 @@
+// Harikrishnan Kokkanthara Jeevan
 #include "parser.h"
 #include "TableLookup.h"
 
@@ -5,7 +6,7 @@ using std::fstream;
 using std::string;
 using std::vector;
 
-//checks if the string is a comment
+// checks if the string is a comment
 bool isComment(const string s)
 {
     if (s[0] == '/')
@@ -17,7 +18,7 @@ bool isComment(const string s)
         return false;
 }
 
-//splits the line into multiple sections, eg: D D-M JMP
+// splits the line into multiple sections, eg: D D-M JMP
 vector<string> &splitCodes(string line, const string delimiter, vector<string> &res)
 {
     size_t pos_start = 0, pos_end, delim_len = delimiter.length();
@@ -34,7 +35,7 @@ vector<string> &splitCodes(string line, const string delimiter, vector<string> &
     return res;
 }
 
-//adds placeholders while parsing the instructions to enable easier translation
+// adds placeholders while parsing the instructions to enable easier translation
 vector<string> parser_string(string line, const string delimiter)
 {
     vector<string> res;
@@ -75,7 +76,7 @@ vector<string> parser_string(string line, const string delimiter)
     return res;
 }
 
-//removes the extention from the filname
+// removes the extention from the filname
 string retFileName(string filename)
 {
     size_t lastindex = filename.find_last_of(".");
@@ -83,7 +84,7 @@ string retFileName(string filename)
     return fileNoExstention;
 }
 
-//creates the hack0 helper file //firstpass
+// creates the hack0 helper file //firstpass
 void labelParser(string filename)
 {
     fstream fin, fout;
@@ -118,7 +119,7 @@ void labelParser(string filename)
                 string noWhiteSpaceline = "";
                 if (!line.empty() && !isComment(line))
                 {
-                    if(line[0]!='(')
+                    if (line[0] != '(')
                     {
                         line_num++;
                     }
@@ -135,13 +136,13 @@ void labelParser(string filename)
                     if (noWhiteSpaceline[0] == '(' && noWhiteSpaceline[noWhiteSpaceline.length() - 1] == ')')
                     {
                         string key = noWhiteSpaceline.substr(1, noWhiteSpaceline.length() - 2);
-                        string val = std::to_string(line_num + 1 );
+                        string val = std::to_string(line_num + 1);
                         symbolTable.insert({key, val});
                     }
                 }
             }
         }
-        fout.close(); 
+        fout.close();
         fin.close();
     }
 
@@ -151,7 +152,7 @@ void labelParser(string filename)
     }
 }
 
-//creates the hack1 helper file . replaces the variables from the file
+// creates the hack1 helper file . replaces the variables from the file
 void symbolParser(string filename)
 {
     fstream fin, fout;
@@ -180,39 +181,37 @@ void symbolParser(string filename)
                 exit(-1);
             }
             int line_num = -1;
-            int i=16;
+            int i = 16;
             while (getline(fin, line))
-            { 
-                if(line[0]=='@' && !isdigit(line[1]))
+            {
+                if (line[0] == '@' && !isdigit(line[1]))
                 {
-                    string var = line.substr(1,line.length()-1);
-                    if(symbolTable.find(var)!=symbolTable.end())
+                    string var = line.substr(1, line.length() - 1);
+                    if (symbolTable.find(var) != symbolTable.end())
                     {
                         string val = symbolTable.at(var);
-                        fout<<"@"+symbolTable.at(var)<<"\n";
+                        fout << "@" + symbolTable.at(var) << "\n";
                     }
                     else
                     {
-                        symbolTable.insert({var,std::to_string(i)});
-                        fout<<"@"+symbolTable.at(var)<<"\n";
+                        symbolTable.insert({var, std::to_string(i)});
+                        fout << "@" + symbolTable.at(var) << "\n";
                         i++;
                     }
                 }
                 else
                 {
-                    fout<<line<<"\n";
+                    fout << line << "\n";
                 }
             }
-      
-        }  
-        fout.close(); 
+        }
+        fout.close();
         fin.close();
     }
     else
     {
         std::cout << "Cannot open .asm file";
     }
-
 }
 
 string removeComments(string prgm)
@@ -254,17 +253,17 @@ string removeComments(string prgm)
     return res;
 }
 
-
 void removeHelperFiles(string filename)
 {
-   try {
-    if (std::filesystem::remove(filename))
-       std::cout << "Helper file " << filename << " deleted.\n";
-    else
-       std::cout << "Helper file " << filename << " not found.\n";
-  }
-  catch(const std::filesystem::filesystem_error& err) {
-     std::cout << "filesystem error: " << err.what() << '\n';
-  }
-  
+    try
+    {
+        if (std::filesystem::remove(filename))
+            std::cout << "Helper file " << filename << " deleted.\n";
+        else
+            std::cout << "Helper file " << filename << " not found.\n";
+    }
+    catch (const std::filesystem::filesystem_error &err)
+    {
+        std::cout << "filesystem error: " << err.what() << '\n';
+    }
 }
