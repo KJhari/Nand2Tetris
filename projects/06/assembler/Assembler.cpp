@@ -103,6 +103,9 @@ int readFile(const string filename)
 	}
 }
 
+
+
+//run compiled file with "-f filename.asm"
 int main(int argc, char **argv)
 {
 	//initialize the predefined symbol & lookup tables
