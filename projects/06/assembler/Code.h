@@ -7,12 +7,10 @@
 #include <bitset>
 
 
-using std::string;
-using std::vector;
-using std::bitset;
 
-string retCodeA(string op);
-string retCodeC(vector<string> op);
+
+std::string retCodeA(std::string op);
+std::string retCodeC(std::vector<std::string> op);
 void initTables();
 
 

@@ -2,6 +2,11 @@
 #include "Code.h"
 #include "TableLookup.h"
 
+using std::string;
+using std::vector;
+using std::bitset;
+
+//initializes the lookup tables
 void initTables()
 {
 
@@ -9,22 +14,10 @@ void initTables()
     initCompNotATable(compNotATable);
     initDestTable(destTable);
     initJumpTable(jmpTable);
-    initJumpTable(symbolTable)
-
-    // unordered_map<string, string>::iterator itr;
-    // std::cout << "\nAll Elements : \n";
-    // for (itr = compATable.begin();
-    //     itr != compATable.end(); itr++)
-    // {
-    //     // itr works as a pointer to
-    //     // pair<string, double> type
-    //     // itr->first stores the key part and
-    //     // itr->second stores the value part
-    //     std::cout << itr->first << "  " <<itr->second << std::endl;
-    // }
-
-    // string s = compATable.at("M");
+    initSymbolTable(symbolTable);
 }
+
+//return the machine code for a instructions
 string retCodeA(string op)
 {
     string s = "";
@@ -39,6 +32,7 @@ string retCodeA(string op)
     return s;
 }
 
+//returns the machine code for c instructions
 string retCodeC(vector<string> op)
 {
     // C instruction format = 1 11(unused) acccc ddd jjj

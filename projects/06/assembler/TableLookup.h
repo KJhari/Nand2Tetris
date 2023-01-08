@@ -6,18 +6,18 @@
 #include <unordered_map>
 
 
-using std::string;
-using std::unordered_map;
 
-extern unordered_map<string, string> jmpTable;
-extern unordered_map<string, string> destTable;
-extern unordered_map<string, string> compATable;
-extern unordered_map<string, string> compNotATable;
-extern unordered_map<string, string> symbolTable
 
-void initJumpTable(unordered_map<string, string> &jmpTable);
-void initDestTable(unordered_map<string, string> &destTable);
-void initCompNotATable(unordered_map<string, string> &compNotATable);
-void initCompATable(unordered_map<string, string> &compNotATable);
+extern std::unordered_map<std::string, std::string> jmpTable;
+extern std::unordered_map<std::string, std::string> destTable;
+extern std::unordered_map<std::string, std::string> compATable;
+extern std::unordered_map<std::string, std::string> compNotATable;
+extern std::unordered_map<std::string, std::string> symbolTable;
+
+void initJumpTable(std::unordered_map<std::string, std::string> &jmpTable);
+void initDestTable(std::unordered_map<std::string, std::string> &destTable);
+void initCompNotATable(std::unordered_map<std::string, std::string> &compNotATable);
+void initCompATable(std::unordered_map<std::string, std::string> &compNotATable);
+void initSymbolTable(std::unordered_map<std::string, std::string> &symbolTable);
 
 #endif

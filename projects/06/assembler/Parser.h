@@ -4,13 +4,17 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>
+#include <algorithm>
+#include <filesystem>
 
-using std::string;
-using std::vector;
 
-bool isComment(const string s);
-vector<string> parser_string(string line,string delimiter);
-string retFileName(string filename);
-
+bool isComment(const std::string s);
+std::vector<std::string> parser_string(std::string line,std::string delimiter);
+std::string retFileName(std::string filename);
+void labelParser(std::string filename);
+void symbolParser(std::string filename);
+std::string removeComments(std::string prgm);
+void removeHelperFiles(std::string filename);
 
 #endif

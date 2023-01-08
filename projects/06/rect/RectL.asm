@@ -5,7 +5,7 @@
 
 // Symbol-less version of the Rect.asm program.
 
-@0
+@0 
 D=M
 @23
 D;JLE

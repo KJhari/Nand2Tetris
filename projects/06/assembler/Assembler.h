@@ -6,10 +6,7 @@
 #include <fstream>
 #include <vector>
 
-using std::string;
-using std::fstream;
-using std::vector;
 
-int readFile(const string filename);
+int readFile(const std::string filename);
 
 #endif
